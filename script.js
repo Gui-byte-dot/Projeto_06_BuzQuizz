@@ -1,4 +1,15 @@
 let array = [];
+contadorcerto = 0;
+contadorerrado = 0;
+let arrayspan = [];
+let contadorspan = 0;
+let arrayquestions = [];
+let arraylevelstext = [];
+let arraylevelsimage = [];
+let arraylevelstitle = [];
+let arraylevelsvalue = [];
+
+
 
 function listarQuizzes(){
     const promessa= axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
@@ -43,6 +54,14 @@ function listarQuizz(el){
 function dadoChegou(resposta){
     renderizarQuizz(resposta.data);
     console.log(resposta.data);
+    arraylevelsvalue.push(resposta.data.levels[0].minValue);
+    arraylevelsvalue.push(resposta.data.levels[1].minValue);
+    arraylevelstext.push(resposta.data.levels[0].text);
+    arraylevelstext.push(resposta.data.levels[1].text);
+    arraylevelsimage.push(resposta.data.levels[0].image);
+    arraylevelsimage.push(resposta.data.levels[1].image);
+    arraylevelstitle.push(resposta.data.levels[0].title);
+    arraylevelstitle.push(resposta.data.levels[1].title);
 }
 
 function renderizarQuizz(quizz){
@@ -54,29 +73,127 @@ function renderizarQuizz(quizz){
     `
     for(let j = 0; j < quizz.questions.length; j++){
         document.querySelector('.quizzescolhido').innerHTML += `
-            <span>${quizz.questions[j].title}</span>
+            <span class="ok" style="background:${quizz.questions[j].color}">${quizz.questions[j].title}</span>
         `
         
         for(let k = 0; k < quizz.questions[j].answers.length; k++){
-            document.querySelector('.quizzescolhido').innerHTML += ` 
-                <div class="onequizz">
+            document.querySelector('.quizzescolhido').innerHTML += `
+                 <div class="onequizz" onclick="mostrarResposta(this)">
                     <img src="${quizz.questions[j].answers[k].image}" />
-                    <p>${quizz.questions[j].answers[k].text}</p>
+                    <p class="sim">${quizz.questions[j].answers[k].text}</p>
+                    <p class="desaparecer">${quizz.questions[j].answers[k].isCorrectAnswer}</p>
                 </div>
-                `
+            `
+            
+            arrayquestions.push(quizz.questions.length);
+            console.log(quizz.levels);
+
 
         }
-    }    
+    }
+    document.querySelector('.quizzfinal').innerHTML += `
+    <p class="reiniciarquizz" onclick="reiniciarQuizz(this)">Reiniciar Quizz</p>
+    `
+    document.querySelector('.quizzfinal').innerHTML += `
+     <p class="voltarparahome" onclick="voltarparahome()">Voltar Para home</p>
+      
+    ` 
+    
+}
+function reiniciarQuizz(){
+    
+    let yes = document.querySelectorAll('.onequizz .sim');
+    for(let a = 0; a < yes.length; a++){
+        yes[a].classList.remove('respostacerta');
+        yes[a].classList.remove('respostaerrada')};
+        document.querySelector('.resultadoquizz').remove();
+        document.querySelector('.resultquizz').remove();
+        contadorcerto = 0;
+        contadorerrado = 0;
+       
 
+}
+function voltarparahome(){
+    console.log('ok');
 
 }
 
 
-// document.querySelector('.quizzescolhido').innerHTML += `
-//         <div class="titlequizz">
-//             <p>${quizz.questions[j].title}"</p>
-//         </div>
-//         `
+
+let titulodoquizz = document.querySelector('.infocomeco input:nth-child(1)');
+let urlimagemquizz = document.querySelector('.infocomeco input:nth-child(2)');
+let perguntasquizz = document.querySelector('.infocomeco input:nth-child(3)');
+let quantidadequizz = document.querySelector('.infocomeco input:nth-child(4)');
+
+let textoprimeirapergunta = document.querySelector('.primeirapergunta input:nth-child(2)');
+let corprimeirapergunta =  document.querySelector('.primeirapergunta input:nth-child(3)');
+
+let textoprimeiraresposta = document.querySelector('.primeiraresposta input:nth-child(2)');
+let urlprimeiraresposta = document.querySelector('.primeiraresposta input:nth-child(3)');
+
+let textoprimeirarespostaincorreta1 = document.querySelector('.primeirarespostaincorreta1 input:nth-child(1)');
+let urlprimeirarespostaincorreta1 = document.querySelector('.primeirarespostaincorreta1 input:nth-child(2)');
+
+let textoprimeirarespostaincorreta2 = document.querySelector('.primeirarespostaincorreta2 input:nth-child(1)');
+let urlprimeirarespostaincorreta2 = document.querySelector('.primeirarespostaincorreta2 input:nth-child(2)');
+
+
+let textoprimeirarespostaincorreta3 = document.querySelector('.primeirarespostaincorreta3 input:nth-child(1)');
+let urlprimeirarespostaincorreta3 = document.querySelector('.primeirarespostaincorreta3 input:nth-child(2)');
+
+
+
+
+
+let textosegundapergunta = document.querySelector('.segundapergunta input:nth-child(1)');
+let corsegundapergunta = document.querySelector('.segundapergunta input:nth-child(2)');
+
+let textosegundaresposta = document.querySelector('.segundaresposta input:nth-child(2)');
+let urlsegundaresposta = document.querySelector('.segundaresposta input:nth-child(3)');
+
+let textosegundarespostaincorreta1 = document.querySelector('.segundarespostaincorreta1 input:nth-child(1)');
+let urlsegundarespostaincorreta1 = document.querySelector('.segundarespostaincorreta1 input:nth-child(2)');
+
+let textosegundarespostaincorreta2 = document.querySelector('.segundarespostaincorreta2 input:nth-child(1)');
+let urlsegundarespostaincorreta2 = document.querySelector('.segundarespostaincorreta2 input:nth-child(2)');
+
+
+let textosegundarespostaincorreta3 = document.querySelector('.segundarespostaincorreta3 input:nth-child(1)');
+let urlsegundarespostaincorreta3 = document.querySelector('.segundarespostaincorreta3 input:nth-child(2)');
+
+
+
+
+
+
+let textoterceirapergunta = document.querySelector('.terceirapergunta input:nth-child(1)');
+let corterceirapergunta = document.querySelector('.terceirapergunta input:nth-child(2)');
+
+let textoterceiraresposta = document.querySelector('.terceiraresposta input:nth-child(2)');
+let urlterceiraresposta = document.querySelector('.terceiraresposta input:nth-child(3)');
+
+let textoterceirarespostaincorreta1 = document.querySelector('.terceirarespostaincorreta1 input:nth-child(1)');
+let urlterceirarespostaincorreta1 = document.querySelector('.terceirarespostaincorreta1 input:nth-child(2)');
+
+let textoterceirarespostaincorreta2 = document.querySelector('.terceirarespostaincorreta2 input:nth-child(1)');
+let urlterceirarespostaincorreta2 = document.querySelector('.terceirarespostaincorreta2 input:nth-child(2)');
+
+
+let textoterceirarespostaincorreta3 = document.querySelector('.terceirarespostaincorreta3 input:nth-child(1)');
+let urlterceirarespostaincorreta3 = document.querySelector('.terceirarespostaincorreta3 input:nth-child(2)');
+
+
+
+let primeironiveltitulo = document.querySelector('.primeironivel input:nth-child(1)');
+let primeironivelcerto = document.querySelector('.primeironivel input:nth-child(2)');
+let primeironivelimagem = document.querySelector('.primeironivel input:nth-child(3)');
+let primeironiveldescricao =  document.querySelector('.primeironivel input:nth-child(4)');
+
+
+let segundoniveltitulo = document.querySelector('.segundonivel input:nth-child(1)');
+let segundonivelcerto = document.querySelector('.segundonivel input:nth-child(2)');
+let segundonivelimagem = document.querySelector('.segundonivel input:nth-child(3)');
+let segundoniveldescricao =  document.querySelector('.segundonivel input:nth-child(4)');
 
 
 
@@ -86,6 +203,68 @@ function renderizarQuizz(quizz){
 
 
 
+
+
+
+
+function mostrarResposta(res){
+    
+   
+    if(res.children[2].innerHTML === 'true'){
+        res.children[1].classList.add('respostacerta');
+        contadorcerto++
+    } else{
+        res.children[1].classList.add('respostaerrada');
+        contadorerrado++
+    }
+  
+    if((contadorcerto + contadorerrado) === arrayquestions[0]){
+        let result = (contadorcerto/arrayquestions[0]);
+        let result1 = result * 100;
+        let result2 = Math.round(result1);
+
+        
+        if(arraylevelsvalue[0] < arraylevelsvalue[1]){
+            if((arraylevelsvalue[0] <= result2)&&(result2 < arraylevelsvalue[1])){
+                document.querySelector('.quizzescolhido').innerHTML += `
+                <p class="resultadoquizz">${result2}% de acerto:${arraylevelstitle[0]}</p>
+                <div class="resultquizz">
+                    <img src="${arraylevelsimage[0]}" />
+                    <p>${arraylevelstext[0]}</p>
+                </div>
+                `
+            } else if(result2 >= arraylevelsvalue[1]){
+                document.querySelector('.quizzescolhido').innerHTML += `
+                <p class="resultadoquizz">${result2}% de acerto:${arraylevelstitle[1]}</p>
+                <div class="resultquizz">
+                    <img src="${arraylevelsimage[1]}"/>
+                    <p>${arraylevelstext[1]}</p>
+                </div>
+
+                `
+            } 
+        } else if(arraylevelsvalue[0] > arraylevelsvalue[1]){
+            if(result2 >= arraylevelsvalue[0]){
+                document.querySelector('.quizzescolhido').innerHTML += `
+                <p class="resultadoquizz">${result2}% de acerto:${arraylevelstitle[0]}</p>
+                <div class="resultquizz">
+                    <img src="${arraylevelsimage[0]}"/>
+                    <p>${arraylevelstext[0]}</p>
+                </div>
+
+                `
+            } else if((arraylevelsvalue[1] <= result2)&&(result2 < arraylevelsvalue[0])){
+                document.querySelector('.quizzescolhido').innerHTML += `
+                <p class="resultadoquizz">${result2}% de acerto:${arraylevelstitle[1]}</p>
+                <div class="resultquizz">
+                    <img src="${arraylevelsimage[1]}"/>
+                    <p>${arraylevelstext[1]}</p>
+                </div>
+                `
+            }
+        }    
+    } 
+}
 
 
 
@@ -98,9 +277,9 @@ function exibircomeco(){
         <p>Comece pelo começo</p>
         <div class="infocomeco">
             <input type="text" placeholder="Titulo do seu quizz"></input>
-            <input type="text" placeholder="Titulo do seu quizz"></input>
-            <input type="text" placeholder="Titulo do seu quizz"></input>
-            <input type="text" placeholder="Titulo do seu quizz"></input>
+            <input type="text" placeholder="URL da imagem do seu quizz"></input>
+            <input type="text" placeholder="Quantidade de perguntas do seu quizz"></input>
+            <input type="text" placeholder="Quantidade de níveis do quizz"></input>
         </div>  
         <div class="prosseguir" onclick="criacaoPerguntas()">Prosseguir para criar perguntas</div>
     </div>`
@@ -177,7 +356,7 @@ function criacaoPerguntas(){
                     <img src="setinha.jpg" onclick="removerpergunta3(this)">
                 </div>
                 <div class="novo3 desaparecer">
-                    <div class="segundapergunta">
+                    <div class="terceirapergunta">
                         <input type="text" placeholder="Texto da pergunta"></input>
                         <input type="text" placeholder="Cor de fundo da pergunta"></input>
                     </div>
@@ -254,7 +433,7 @@ function decidirNiveis(){
                 </div>
             </div>
         </div>
-        <div class="finalizarquizz">Finalizar Quizz</div>
+        <div class="finalizarquizz" onclick="enviarDados()">Finalizar Quizz</div>
     </div>
     
       
@@ -314,3 +493,81 @@ function removernivel3(){
 
 
 
+function enviarDados(){
+    const promessa1 = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",{
+        title: titulodoquizz.value,
+        image: urlimagemquizz.value,
+        questions: [
+            {
+                title: textoprimeirapergunta.value,
+                color: corprimeirapergunta.value,
+                answers: [
+                    {
+                        text: textoprimeiraresposta.value,
+                        image: urlprimeiraresposta.value,
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: textoprimeirarespostaincorreta1.value,
+                        image: urlprimeirarespostaincorreta1.value,
+                        isCorrectAnswer: false
+                    }
+                ]
+            },
+            {
+                title: textosegundapergunta.value,
+                color: corsegundapergunta.value,
+                answers: [
+                    {
+                        text: textosegundaresposta.value,
+                        image: urlsegundaresposta.value,
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: textosegundarespostaincorreta1.value,
+                        image: urlsegundarespostaincorreta1.value,
+                        isCorrectAnswer: false
+                    }
+                ]
+            },
+            {
+                title: textoterceirapergunta.value,
+                color: corterceirapergunta,
+                answers: [
+                    {
+                        text: textoterceiraresposta.value,
+                        image: urlterceiraresposta.value,
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: textoterceirarespostaincorreta1.value,
+                        image: urlterceirarespostaincorreta1.value,
+                        isCorrectAnswer: false
+                    }
+                ]
+            }
+        ],
+        levels: [
+            {
+                title: primeironiveltitulo.value,
+                image: primeironivelimagem.value,
+                text: primeironiveldescricao.value,
+                minValue: primeironivelcerto.value
+            },
+            {
+                title: segundoniveltitulo.value,
+                image: segundonivelimagem.value,
+                text: segundoniveldescricao.value,
+                minValue: segundonivelcerto.value
+            }
+        ]
+    });
+    promessa1.then(quandoSucesso);
+    promessa1.catch(quandoErro);
+}
+function quandoSucesso(response){
+    console.log(response);
+}
+function quandoErro(err){
+    console.log(err);
+}
